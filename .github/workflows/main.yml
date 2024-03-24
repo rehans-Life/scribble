@@ -25,4 +25,4 @@ jobs:
         run: cd client && npm install
       
       - name: Linting and Testing
-        run: npm run lint && npm run test:chrome
+        run: cd client && npm run lint && npm run test:chrome
