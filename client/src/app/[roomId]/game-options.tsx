@@ -17,7 +17,7 @@ import Users from "./users";
 export default function GameOptions() {
   const room = useSelector(getRoom);
   const drawer = useSelector(getDrawer);
-  const user = useSelector(getUser(socket.id));
+  const user = useSelector(getUser(socket.id || ""));
   const messages = useSelector(getMessages);
 
   const timeValue = useAtomValue(timerAtom);

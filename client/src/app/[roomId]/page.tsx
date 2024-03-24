@@ -1,6 +1,5 @@
 "use client";
 
-import Header from "@/app/[roomId]/header";
 import { getRoom, isRoomConnected } from "@/redux/slices/roomSlice";
 import { Room } from "@/utils/interfaces";
 import { useRouter } from "next/navigation";
