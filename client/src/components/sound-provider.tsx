@@ -27,7 +27,7 @@ export default function SoundProvider({
 
   const room = useSelector(getRoom);
   const drawer = useSelector(getDrawer);
-  const user = useSelector(getUser(socket.id));
+  const user = useSelector(getUser(socket.id || ""));
 
   const [audios] = useState<AudioState | null>(
     typeof Audio !== "undefined"
