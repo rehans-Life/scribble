@@ -22,7 +22,7 @@ services:
       - DB_PASSWORD
       - DB_URI
     environment:
-      - PORT: ${PORT}
+      PORT: ${PORT}
 
   nginx:
     container_name: nginx-service
