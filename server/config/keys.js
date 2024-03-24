@@ -1,9 +1,9 @@
 let keys;
 
 if ((process.env.NODE_ENV || '').trim() === 'development') {
-    keys = require('./dev').default
+    keys = require('./dev')
   } else {
-    keys = require('./prod').default
+    keys = require('./prod')
   }
   
 module.exports = keys;
