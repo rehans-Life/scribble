@@ -1,0 +1,36 @@
+version: "3"
+
+secrets:
+  DB_PASSWORD:
+    environment: "DB_PASSWORD"
+  DB_URI:
+    environment: "DB_URI"
+
+services:
+  client:
+    container_name: client-service
+    depends_on:
+      - api
+    restart: always
+    image: rehanslife/scribble-client
+
+  api:
+    container_name: api-service
+    restart: always
+    image: rehanslife/scribble-server
+    secrets:
+      - DB_PASSWORD
+      - DB_URI
+    environment:
+      - PORT: ${PORT}
+
+  nginx:
+    container_name: nginx-service
+    restart: always
+    depends_on:
+      - api
+      - client
+    ports:
+      - "80:80"
+      - "443:443"
+    image: rehanslife/scribble-nginx

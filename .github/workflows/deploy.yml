@@ -1,0 +1,63 @@
+name: Deploy to Gloud
+
+on:
+  workflow_run:
+    workflows: [Publish To Docker]
+    types:
+      - completed
+    branches: [main]
+
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    environment: Deployment
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+
+      - name: install gcloud
+        uses: google-github-actions/setup-gcloud@v0.3.0
+        with:
+          project_id: ${{ secrets.PROJECT_ID }}
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+          export_default_crendentials: true
+
+      - name: Access gcloud CLI
+        run: |
+          gcloud auth configure-docker
+
+      - name: SCP into GCP instance to transfer docker compose file
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VM_INSTANCE_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SHH_PRIVATE_KEY }}
+          source: "docker-compose.yml"
+          target: "/home/${{ secrets.SSH_USERNAME }}/"
+
+      - name: SSH into GCP instance to run docker compose file
+        uses: appleboy/ssh-action@master     
+        env:  
+          PORT: ${{ secrets.PORT }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_URI: ${{ secrets.DB_URI }}
+        with:
+          host: ${{ secrets.VM_INSTANCE_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SHH_PRIVATE_KEY }}
+          envs: PORT,DB_PASSWORD,DB_URI
+          script: |
+            docker exec nginx-service certbot delete --cert-name scribble.defidigital.site
+            docker compose -f /home/${{ secrets.SSH_USERNAME }}/docker-compose.yml down --remove-orphans
+            docker image prune -af
+            docker compose -f /home/${{ secrets.SSH_USERNAME }}/docker-compose.yml build --pull
+            docker compose -f /home/${{ secrets.SSH_USERNAME }}/docker-compose.yml up -d
+            docker exec nginx-service certbot --nginx -d scribble.defidigital.site --noninteractive --redirect --agree-tos --email rehantosif5@gmail.com
+
+
+
+
+
