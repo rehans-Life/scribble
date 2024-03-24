@@ -8,7 +8,7 @@ ENV NEXT_PUBLIC_PROD_SOCKET_URL=${NEXT_PUBLIC_PROD_SOCKET_URL}
 
 COPY package.json .
 
-RUN npm install --omit=dev
+RUN npm install
 
 COPY . .
 
