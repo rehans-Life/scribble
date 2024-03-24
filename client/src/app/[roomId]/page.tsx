@@ -1,7 +1,6 @@
 "use client";
 
 import { getRoom, isRoomConnected } from "@/redux/slices/roomSlice";
-import { Room } from "@/utils/interfaces";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
