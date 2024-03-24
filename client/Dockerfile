@@ -20,7 +20,7 @@ WORKDIR /usr/app
 
 ENV NODE_ENV=production
 
-COPY --from=builder /usr/app/.next/standlone .
+COPY --from=builder /usr/app/.next/standalone .
 
 COPY --from=builder /usr/app/public ./public
 COPY --from=builder /usr/app/.next/static ./.next/static
