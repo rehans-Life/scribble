@@ -25,4 +25,4 @@ COPY --from=builder /usr/app/.next/standalone .
 COPY --from=builder /usr/app/public ./public
 COPY --from=builder /usr/app/.next/static ./.next/static
 
-RUN ["node", "server.js"]
+RUN [ "server.js" ]
