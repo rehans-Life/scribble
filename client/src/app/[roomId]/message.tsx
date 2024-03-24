@@ -1,6 +1,6 @@
-import { Message } from "@/utils/interfaces";
+import { Message as IMessage } from "@/utils/interfaces";
 
-export default function Message({ message }: { message: Message }) {
+export default function Message({ message }: { message: IMessage }) {
   const common =
     "text-[11px] md:text-[13px] w-full font-medium p-1 py-2 odd:bg-white even:bg-slate-200";
 
