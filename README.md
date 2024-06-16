@@ -16,7 +16,7 @@ Scribble is a web-based multiplayer game inspired by Skribbl.io. Players take tu
 2. Each round, a player is chosen as the artist and a secret word is revealed to them.
 3. The artist uses the drawing tools to depict the word within the time limit.
 4. Other players guess the word based on the evolving sketch.
-5. The players to guess correctly win points for that round.
+5. The players to guess correctly wins points for that round.
 
 **Technical details:**
 
