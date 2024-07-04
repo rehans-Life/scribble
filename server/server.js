@@ -23,14 +23,8 @@ const {
 } = require("./controllers/socketControllers");
 const keys = require("./config/keys");
 
-const { PORT } = process.env;
-const DB_URI = keys.DB_URI.replace(
-  "<password>",
-  keys.DB_PASSWORD,
-);
-
 (async () => {
-  await mongoose.connect(DB_URI);
+  await mongoose.connect(keys.DB_URI);
 
   const httpServer = createServer(app);
 
@@ -38,7 +32,7 @@ const DB_URI = keys.DB_URI.replace(
   const io = new Server(httpServer, {
     pingTimeout: 60000,
     cors: {
-      origin: keys.FRONTEND_URL,
+      origin: keys.FRONTEND_URI,
     },
   });
 
@@ -64,7 +58,7 @@ const DB_URI = keys.DB_URI.replace(
     });
   });
 
-  httpServer.listen(PORT, () => {
-    console.log(`Server Listening on PORT ${PORT}`);
+  httpServer.listen(keys.PORT, () => {
+    console.log(`Server Listening on PORT ${keys.PORT}`);
   });
 })();

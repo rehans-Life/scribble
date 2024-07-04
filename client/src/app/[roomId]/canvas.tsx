@@ -57,6 +57,7 @@ export default function Canvas() {
   const [strokeWidth, setStrokeWidth] = useState<number>(5);
 
   const isDrawing = useRef<boolean>(false);
+  const throttle = useRef<boolean>(false);
   const stageRef = useRef<s | null>(null);
   const layerRef = useRef<l | null>(null);
   const stageContainerRef = useRef<HTMLDivElement | null>(null);
@@ -124,11 +125,24 @@ export default function Canvas() {
   }, []);
 
   const emitBoardChange = useCallback(() => {
-    if (!isDrawer) return;
+    if (!isDrawer || throttle.current) return;
+    
+    throttle.current = true;
 
-    const newCanvasState: CanvasState = createCanvasState();
+    console.log('Executed');
 
-    socket.emit("board-change", room?.id, newCanvasState);
+    function emitChange() {
+      const newCanvasState: CanvasState = createCanvasState();
+      socket.emit("board-change", room?.id, newCanvasState);
+    }
+
+    emitChange();
+
+    setTimeout(() => {
+      emitChange();
+      throttle.current = false;
+    }, 100);
+
   }, [room, createCanvasState]);
 
   const clearBoard = useCallback(() => {
